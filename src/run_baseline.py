@@ -64,7 +64,7 @@ if __name__ == '__main__':
 
     model = get_model_from_architecture(input_shape = INPUT_DIM, classes = 2)
     model.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['accuracy'])
-    model.fit(x_train, y_train, epochs = 3, batch_size = 32)
+    model.fit(x_train, y_train, epochs = NUM_EPOCHS, batch_size = 32)
 
     predictions = model.evaluate(x_test, y_test)
     print "Loss = " + str(predictions[0])
