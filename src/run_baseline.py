@@ -43,7 +43,7 @@ def get_model_from_architecture(input_shape, classes):
     X = BatchNormalization(axis = 3, name = bn_name_base + '2a')(X)
     X = Activation('relu')(X)
     X = MaxPooling3D((2, 2, 2), strides = (2, 2, 2))(X)
-
+    
     X = Conv3D(2, (1, 1, 1), strides = (2, 2, 2), name = 'conv2', kernel_initializer = glorot_uniform(seed = 0))(X)
     X = BatchNormalization(axis = 3, name = bn_name_base + '2b')(X)
     X = Activation('relu')(X)

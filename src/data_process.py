@@ -15,6 +15,9 @@ FRAMES_SUBDIR = 'video'
 # Used to construct sentence ID dictionary. Ignores classes that contain this word.
 REJECT_ID = 'head'
 
+# Used to normalize input images.
+MAX_PIX_VAL = 255
+
 # Returns a sentence map, which takes as input a sentence ID and outputs a
 # generated index such that there is a bijection from sentence ID's to indices.
 # To generate this sentence map, an |example_subject| in the dataset located at
@@ -53,6 +56,7 @@ def generate_tensor_with_first_frames(path, num_frames_per_tensor):
 # |num_frames_per_tensor| to configure the number of frames the tensor uses.
 # Note that these frames are stacked chronologically and are dispersed as
 # uniformly as possible so as to cover the full duration of the video frames.
+# Also note that each frame is normalized.
 def generate_tensor(path, num_frames_per_tensor):
     frames = get_files(path)
     frames.sort()
@@ -64,7 +68,7 @@ def generate_tensor(path, num_frames_per_tensor):
     uniform_dispersion = np.linspace(0, len(frames) - 1, num = num_frames_per_tensor)
     for i in uniform_dispersion:
         frame_path = join(path, frames[int(i)])
-        frame = imread(frame_path)
+        frame = imread(frame_path) / MAX_PIX_VAL
         tensor_frames.append(frame)
 
     tensor_frames = np.stack(tensor_frames)
