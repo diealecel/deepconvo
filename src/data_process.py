@@ -6,7 +6,7 @@ from cv2 import imread
 from os.path import join
 from keras.utils.np_utils import to_categorical
 
-from utilities import get_immediate_subdirs, split_subdirs, get_files, print_progress
+from utilities import *
 
 # Subdirectory that contains video frames within subject files.
 FRAMES_SUBDIR = 'video'
