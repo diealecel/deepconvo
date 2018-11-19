@@ -11,6 +11,9 @@ from data_process import get_data
 # The number of epochs to train the model.
 NUM_EPOCHS = 10
 
+# The batch size to be used for training.
+BATCH_SZ = 20
+
 # The number of ordered frames per data point tensor.
 NUM_FRAMES_PER_TENSOR = 50
 
@@ -64,7 +67,7 @@ if __name__ == '__main__':
 
     model = get_model_from_architecture(input_shape = INPUT_DIM, classes = 2)
     model.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['accuracy'])
-    model.fit(x_train, y_train, epochs = NUM_EPOCHS, batch_size = 32)
+    model.fit(x_train, y_train, epochs = NUM_EPOCHS, batch_size = BATCH_SZ)
 
     predictions = model.evaluate(x_test, y_test)
     print "Loss = " + str(predictions[0])
