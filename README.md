@@ -10,6 +10,6 @@ cd deep_convo
 virtualenv .env
 source .env/bin/activate
 
-# Install the dependencies.
+# Install the dependencies in your new virtual environment.
 pip install -r dependencies.txt
 ```
