@@ -1,5 +1,9 @@
 # deepConvo
 
+Created as a final project for CS 229 at Stanford University during fall 2018.
+
+## Setup
+
 To run code in this repository, first install the dependencies by running the following code snippet.
 
 ``` bash
@@ -13,3 +17,7 @@ source .env/bin/activate
 # Install the dependencies in your virtual environment.
 pip install -r dependencies.txt
 ```
+
+## Acknowledgments
+
+This repository uses the [VidTIMIT Audio-Video Dataset](http://conradsanderson.id.au/vidtimit/).
