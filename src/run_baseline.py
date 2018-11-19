@@ -8,6 +8,9 @@ from keras.initializers import glorot_uniform
 
 from data_process import get_data
 
+# The number of epochs to train the model.
+NUM_EPOCHS = 10
+
 # The number of ordered frames per data point tensor.
 NUM_FRAMES_PER_TENSOR = 50
 
