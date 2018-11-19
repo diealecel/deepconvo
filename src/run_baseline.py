@@ -63,6 +63,6 @@ if __name__ == '__main__':
     model.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['accuracy'])
     model.fit(x_train, y_train, epochs = 3, batch_size = 32)
 
-    preds = model.evaluate(x_test, y_test)
-    print "Loss = " + str(preds[0])
-    print "Test accuracy = " + str(preds[1])
+    predictions = model.evaluate(x_test, y_test)
+    print "Loss = " + str(predictions[0])
+    print "Test accuracy = " + str(predictions[1])
