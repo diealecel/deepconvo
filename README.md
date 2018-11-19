@@ -10,7 +10,7 @@ To run code in this repository, first install the dependencies by running the fo
 
 ``` bash
 # Make sure you're in the repository's home folder.
-cd deep_convo
+cd deepconvo
 
 # Create and activate a new virtual environment.
 virtualenv .env
