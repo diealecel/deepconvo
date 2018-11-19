@@ -2,7 +2,7 @@
 
 Created as a final project for CS 229 at Stanford University during fall 2018.
 
-## How to deepConvo
+## How to use deepConvo
 
 ### Setup
 
