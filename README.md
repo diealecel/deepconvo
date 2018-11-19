@@ -1,9 +1,15 @@
-deep_convo
+# DeepConvo
 
-Set up requirements by running:
+To run code in this repository, first install the dependencies by running the following code snippet.
 
-virtualenv -p python .env
+``` bash
+# Make sure you're in the repository's home folder.
+cd deep_convo
 
+# Create and activate a new virtual environment.
+virtualenv .env
 source .env/bin/activate
 
-pip install -r requirements.txt
+# Install the dependencies.
+pip install -r dependencies.txt
+```
