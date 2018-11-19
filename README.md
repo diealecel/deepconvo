@@ -2,7 +2,9 @@
 
 Created as a final project for CS 229 at Stanford University during fall 2018.
 
-## Setup
+## How to deepConvo
+
+### Setup
 
 To run code in this repository, first install the dependencies by running the following code snippet.
 
@@ -16,6 +18,20 @@ source .env/bin/activate
 
 # Install the dependencies in your virtual environment.
 pip install -r dependencies.txt
+```
+
+Make sure to have the environment activated whenever you are dealing with deepConvo.
+
+### Training the model
+
+To train the model, follow the code snippet below.
+
+``` bash
+# Assuming you're in the repository's home folder, go to src/.
+cd src/
+
+# Train the model.
+python run_baseline.py
 ```
 
 ## Acknowledgments
