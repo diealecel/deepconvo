@@ -3,6 +3,7 @@
 import numpy as np
 
 from cv2 import imread
+from deprecated import deprecated
 from os.path import join
 from keras.utils.np_utils import to_categorical
 
@@ -30,16 +31,39 @@ def create_sentence_map(path, example_subject):
     return sentence_map
 
 
+@deprecated
 # Returns the tensor that corresponds to the video frames at |path|. Uses
 # |num_frames_per_tensor| to configure the number of frames the tensor
 # uses. Note that these frames are stacked chronologically.
-def generate_tensor(path, num_frames_per_tensor):
+def generate_tensor_with_first_frames(path, num_frames_per_tensor):
     frames = get_files(path)
     frames.sort()
 
     tensor_frames = []
     for i in xrange(num_frames_per_tensor):
         frame_path = join(path, frames[i])
+        frame = imread(frame_path)
+        tensor_frames.append(frame)
+
+    tensor_frames = np.stack(tensor_frames)
+    return tensor_frames
+
+
+# Returns the tensor that corresponds to the video frames at |path|. Uses
+# |num_frames_per_tensor| to configure the number of frames the tensor uses.
+# Note that these frames are stacked chronologically and are dispersed as
+# uniformly as possible so as to cover the full duration of the video frames.
+def generate_tensor(path, num_frames_per_tensor):
+    frames = get_files(path)
+    frames.sort()
+
+    if len(frames) < num_frames_per_tensor:
+        raise Exception('Not enough frames to generate tensors. Please decrease |NUM_FRAMES_PER_TENSOR|.')
+
+    tensor_frames = []
+    uniform_dispersion = np.linspace(0, len(frames) - 1, num = num_frames_per_tensor)
+    for i in uniform_dispersion:
+        frame_path = join(path, frames[int(i)])
         frame = imread(frame_path)
         tensor_frames.append(frame)
 
