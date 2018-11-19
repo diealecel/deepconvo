@@ -1,1 +1,2 @@
+# Standard name for virtual environment, reserved to locally install dependencies.
 .env*
