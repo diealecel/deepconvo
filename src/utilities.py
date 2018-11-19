@@ -3,6 +3,7 @@
 # deepConvo: a project for CS 229 at Stanford University during fall 2018.
 
 from sys import stdout
+from random import shuffle
 from os import listdir
 from os.path import join, isdir, isfile
 
@@ -59,6 +60,7 @@ def split_subdirs(subjects, train_split):
     if desired_train_num == 0 or desired_train_num == len(subjects):
         raise Exception('Cannot allocate enough training and testing examples. Please modify TRAIN_SPLIT.')
 
+    shuffle(subjects)
     train_subjects = subjects[:desired_train_num]
     test_subjects = subjects[desired_train_num:]
 
