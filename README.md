@@ -1,4 +1,4 @@
-# DeepConvo
+# deepConvo
 
 To run code in this repository, first install the dependencies by running the following code snippet.
 
