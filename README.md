@@ -36,7 +36,7 @@ cd src/
 python run_baseline.py
 
 # Train the model using stacked RGB optical flow tensors.
-python run_optical_flow.py
+python run_rgb_optical_flow.py
 ```
 
 ## Results
