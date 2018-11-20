@@ -41,7 +41,7 @@ python run_optical_flow.py
 
 ## Results
 
-<center>deepConvo yields different results depending on how it's trained. Below are results after training for ten epochs with 50-layer tensor data point representation.</center>
+deepConvo yields different results depending on how it's trained. Below are results after training for ten epochs with 50-layer tensor data point representation.
 
 train method | train loss | train accuracy | test accuracy
 --- | --- | --- | --- 
