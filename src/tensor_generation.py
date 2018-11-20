@@ -9,7 +9,7 @@ from deprecated import deprecated
 
 from utilities import get_files, join
 
-# Used to normalize input images.
+# Used to normalize pixel values.
 MAX_PIX_VAL = 255
 
 @deprecated
@@ -58,7 +58,7 @@ def generate_rgb_tensor(path, num_frames_per_tensor):
 # the number of frames the tensor uses. Note that these frames are stacked
 # chronologically and are dispersed as uniformly as possible so as to cover the
 # full duration of the video.
-def generate_optical_flow_tensor(path, num_frames_per_tensor):
+def generate_rgb_optical_flow_tensor(path, num_frames_per_tensor):
     frames = get_files(path)
     frames.sort()
 

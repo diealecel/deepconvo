@@ -6,7 +6,7 @@ from os.path import join
 from keras.utils.np_utils import to_categorical
 
 from utilities import get_immediate_subdirs, split_subdirs, print_progress
-from tensor_generation import generate_rgb_tensor, generate_optical_flow_tensor
+from tensor_generation import generate_rgb_tensor, generate_rgb_optical_flow_tensor
 
 # Subdirectory that contains video frames within subject files.
 FRAMES_SUBDIR = 'video'
@@ -35,8 +35,8 @@ def create_sentence_map(path, example_subject):
 def get_tensor(data_path, num_frames_per_tensor, data_type):
     if data_type == 'rgb':
         return generate_rgb_tensor(data_path, num_frames_per_tensor)
-    if data_type == 'optical':
-        return generate_optical_flow_tensor(data_path, num_frames_per_tensor)
+    if data_type == 'rgb_optical_flow':
+        return generate_rgb_optical_flow_tensor(data_path, num_frames_per_tensor)
 
 
 # Returns data points from |subjects| as numpy tensors prepared according to
