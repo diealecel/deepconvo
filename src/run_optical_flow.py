@@ -63,7 +63,7 @@ if __name__ == '__main__':
     setup()
 
     print 'Gathering data...'
-    x_train, y_train, x_test, y_test = get_data(DATASET_PATH, TRAIN_SPLIT, NUM_FRAMES_PER_TENSOR, 'rgb')
+    x_train, y_train, x_test, y_test = get_data(DATASET_PATH, TRAIN_SPLIT, NUM_FRAMES_PER_TENSOR, 'optical')
 
     model = get_model_from_architecture(input_shape = INPUT_DIM, classes = 2)
     model.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['accuracy'])
