@@ -45,7 +45,7 @@ deepConvo yields different results depending on how it's trained. Below are resu
 
 train method | train loss | train accuracy | test accuracy
 --- | --- | --- | --- 
-RGB tensors | .811 | .7375 | .5
+RGB tensors | .811 | 73.75% | 50%
 RGB optical flow tensors | ? | ? | ?
 
 ## Acknowledgments
