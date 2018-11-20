@@ -26,14 +26,17 @@ Make sure to have the environment activated whenever you are dealing with deepCo
 
 ### Training the model
 
-To train the model, follow the code snippet below.
+To train the model, follow the code snippet below and choose one training method.
 
 ``` bash
 # Assuming you're in the repository's home folder, go to src/.
 cd src/
 
-# Train the model.
+# Train the model using stacked RGB tensors.
 python run_baseline.py
+
+# Train the model using stacked RGB optical flow tensors.
+python run_optical_flow.py
 ```
 
 ## Acknowledgments
