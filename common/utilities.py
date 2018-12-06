@@ -43,10 +43,13 @@ def get_immediate_subdirs(path):
 
 
 # Returns the file names in |path|.
-def get_files(path):
+def get_files(path, extension = None):
     files = []
     for thing in listdir(path):
-        if isfile(join(path, thing)):
+        thing_path = join(path, thing)
+        thing_satisfies_extension = extension is None or thing_path.endswith(extension)
+
+        if isfile(thing_path) and thing_satisfies_extension:
             files.append(thing)
 
     return files

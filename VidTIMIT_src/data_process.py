@@ -2,11 +2,12 @@
 
 import numpy as np
 
+from cv2 import imread
 from os.path import join
 from keras.utils.np_utils import to_categorical
 
-from utilities import get_immediate_subdirs, split_subdirs, print_progress
-from tensor_generation import generate_rgb_tensor, generate_rgb_optical_flow_tensor
+from common.utilities import get_immediate_subdirs, split_subdirs, print_progress, get_files
+from common.tensor_generation import generate_rgb_tensor, generate_rgb_optical_flow_tensor
 
 # Subdirectory that contains video frames within subject files.
 FRAMES_SUBDIR = 'video'
@@ -30,13 +31,29 @@ def create_sentence_map(path, example_subject):
     return sentence_map
 
 
-# Returns the tensor made from |data_path| according to |num_frames_per_tensor|
-# and |data_type|.
-def get_tensor(data_path, num_frames_per_tensor, data_type):
-    if data_type == 'rgb':
-        return generate_rgb_tensor(data_path, num_frames_per_tensor)
-    if data_type == 'rgb_optical_flow':
-        return generate_rgb_optical_flow_tensor(data_path, num_frames_per_tensor)
+# Returns the ordered frames of the video at |datum_path|.
+def get_frames(datum_path):
+    frame_filenames = get_files(datum_path)
+    frame_filenames.sort()
+    frame_paths = [ join(datum_path, frame_filename) for frame_filename in frame_filenames ]
+
+    frames = []
+    for frame_path in frame_paths:
+        frame = imread(frame_path)
+        frames.append(frame)
+
+    return frames
+
+
+# Returns the tensor made from |datum_path| according to |num_frames_per_tensor|
+# and |tensor_type|.
+def get_tensor(datum_path, num_frames_per_tensor, tensor_type):
+    frames = get_frames(datum_path)
+
+    if tensor_type == 'rgb':
+        return generate_rgb_tensor(frames, num_frames_per_tensor)
+    if tensor_type == 'rgb_optical_flow':
+        return generate_rgb_optical_flow_tensor(frames, num_frames_per_tensor)
 
 
 # Returns data points from |subjects| as numpy tensors prepared according to

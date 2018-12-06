@@ -7,61 +7,47 @@ from cv2 import COLOR_RGB2GRAY, COLOR_RGB2HSV, NORM_MINMAX, COLOR_HSV2RGB
 from copy import deepcopy
 from deprecated import deprecated
 
-from utilities import get_files, join
-
 # Used to normalize pixel values.
 MAX_PIX_VAL = 255
 
 @deprecated
-# Returns the tensor that corresponds to the video frames at |path|. Uses
+# Returns the tensor that corresponds to the video frames |frames|. Uses
 # |num_frames_per_tensor| to configure the number of frames the tensor uses.
 # Note that these frames are stacked chronologically.
-def generate_tensor_with_first_frames(path, num_frames_per_tensor):
-    frames = get_files(path)
-    frames.sort()
-
+def generate_tensor_with_first_frames(frames, num_frames_per_tensor):
     tensor_frames = []
     for i in xrange(num_frames_per_tensor):
-        frame_path = join(path, frames[i])
-        frame = imread(frame_path)
-        tensor_frames.append(frame)
+        tensor_frames.append(frames[i])
 
     tensor_frames = np.stack(tensor_frames)
     return tensor_frames
 
 
-# Returns the tensor that corresponds to the video frames at |path|. Uses
+# Returns the tensor that corresponds to the video frames |frames|. Uses
 # |num_frames_per_tensor| to configure the number of frames the tensor uses.
 # Note that these frames are stacked chronologically and are dispersed as
 # uniformly as possible so as to cover the full duration of the video. Also
 # note that each frame is normalized.
-def generate_rgb_tensor(path, num_frames_per_tensor):
-    frames = get_files(path)
-    frames.sort()
-
+def generate_rgb_tensor(frames, num_frames_per_tensor):
     if len(frames) < num_frames_per_tensor:
         raise Exception('Not enough frames to generate tensors. Please decrease |NUM_FRAMES_PER_TENSOR|.')
 
     tensor_frames = []
     uniform_dispersion = np.linspace(0, len(frames) - 1, num = num_frames_per_tensor)
     for i in uniform_dispersion:
-        frame_path = join(path, frames[int(i)])
-        frame = imread(frame_path) / MAX_PIX_VAL
+        frame = frames[int(i)] / MAX_PIX_VAL
         tensor_frames.append(frame)
 
     tensor_frames = np.stack(tensor_frames)
     return tensor_frames
 
 
-# Returns the tensor that corresponds to the video frames at |path| after going
+# Returns the tensor that corresponds to the video frames |frames| after going
 # through RGB optical flow processing. Uses |num_frames_per_tensor| to configure
 # the number of frames the tensor uses. Note that these frames are stacked
 # chronologically and are dispersed as uniformly as possible so as to cover the
 # full duration of the video.
-def generate_rgb_optical_flow_tensor(path, num_frames_per_tensor):
-    frames = get_files(path)
-    frames.sort()
-
+def generate_rgb_optical_flow_tensor(frames, num_frames_per_tensor):
     # Plus one since we need an additional frame to perform optical flow.
     if len(frames) < num_frames_per_tensor + 1:
         raise Exception('Not enough frames to generate tensors. Please decrease |NUM_FRAMES_PER_TENSOR|.')
@@ -70,8 +56,7 @@ def generate_rgb_optical_flow_tensor(path, num_frames_per_tensor):
     prev_frame = None
     uniform_dispersion = np.linspace(0, len(frames) - 1, num = num_frames_per_tensor + 1)
     for i in uniform_dispersion:
-        frame_path = join(path, frames[int(i)])
-        frame = imread(frame_path)
+        frame = frames[int(i)]
 
         # Create initial frame.
         if int(i) == 0:
