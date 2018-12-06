@@ -34,7 +34,7 @@ def setup():
 
 # Returns a model with the layers described in the function.
 def get_model_from_architecture(input_shape, classes):
-    bn_name_base = "lipreader"
+    bn_name_base = 'lipreader'
 
     # Define the input as a tensor with shape |input_shape|.
     X_input = Input(input_shape)
