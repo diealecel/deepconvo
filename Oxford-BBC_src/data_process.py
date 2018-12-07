@@ -9,7 +9,7 @@ from keras.utils.np_utils import to_categorical
 from keras.utils import Sequence
 
 from common.utilities import get_immediate_subdirs, get_files, print_progress
-from common.tensor_generation import generate_rgb_optical_flow_tensor
+from common.tensor_generation import generate_rgb_optical_flow_tensor, generate_rgb_tensor
 
 DATA_EXT = '.mp4'
 

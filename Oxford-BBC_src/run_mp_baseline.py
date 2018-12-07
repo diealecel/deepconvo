@@ -22,7 +22,7 @@ BATCH_PERCENTAGE = .005
 BATCH_SZ = 20
 
 # The number of ordered frames per data point tensor.
-NUM_FRAMES_PER_TENSOR = 29 - 1
+NUM_FRAMES_PER_TENSOR = 29
 
 # The number of classes the model will try to discriminate.
 NUM_CLASSES = 500
