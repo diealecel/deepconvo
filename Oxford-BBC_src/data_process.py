@@ -150,7 +150,7 @@ class OxfordBBCSequence(Sequence):
         self.word_trackers, self.word_limits = init_word_tools(batch_type, dataset_path, limited_words)
         self.word_map = create_word_map(dataset_path)
 
-        file_name = self.batch_type + "_logfile.txt"
+        file_name = self.batch_type + "_" + self.tensor_type +  "_logfile.txt"
         self.logfile_path = join(self.dataset_path, '..', file_name)
 
         self.log_file(True)
