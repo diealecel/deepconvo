@@ -43,7 +43,7 @@ def init_word_tools(batch_type, dataset_path, limited_words=0):
     words = get_immediate_subdirs(dataset_path)
     if limited_words:
         seed(10)
-        words = sample(words, num_words)
+        words = sample(words, limited_words)
 
     word_trackers = init_word_trackers(words)
     word_limits = get_word_limits(words, batch_type, dataset_path)
@@ -150,14 +150,14 @@ class OxfordBBCSequence(Sequence):
         self.word_trackers, self.word_limits = init_word_tools(batch_type, dataset_path, limited_words)
         self.word_map = create_word_map(dataset_path)
 
-        file_name = self.batch_type + "_logfile.txt")
+        file_name = self.batch_type + "_logfile.txt"
         self.logfile_path = join(self.dataset_path, '..', file_name)
 
         self.log_file(True)
 
-    def log_file(self, open):
+    def log_file(self, init):
         with open(self.logfile_path, 'a') as f:
-            if open:
+            if init:
                 f.write("Selected Dictionary\n\n")
             else:
                 f.write("\nExample Counts\n")

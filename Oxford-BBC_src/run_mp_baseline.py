@@ -37,7 +37,7 @@ NUM_VAL_EXAMPLES = 25000
 INPUT_DIM = (NUM_FRAMES_PER_TENSOR, 256, 256, 3)
 
 # Dataset relative path.
-DATASET_PATH = '/Users/diego/Desktop/Oxford-BBC LRW Dataset/'
+DATASET_PATH = '/home/diego/Oxford-BBC LRW Dataset'
 
 # The tensor type to use in training and testing.
 TENSOR_TYPE = 'rgb'
