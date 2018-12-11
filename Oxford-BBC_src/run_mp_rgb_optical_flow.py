@@ -13,7 +13,7 @@ from data_process import OxfordBBCSequence
 NUM_WORKERS = 100
 
 # The number of epochs to train the model.
-NUM_EPOCHS = 10
+NUM_EPOCHS = 3
 
 # The percentage of all batches to use for training per epoch.
 BATCH_PERCENTAGE = .005
@@ -37,13 +37,13 @@ NUM_VAL_EXAMPLES = 25000
 INPUT_DIM = (NUM_FRAMES_PER_TENSOR, 256, 256, 3)
 
 # Dataset relative path.
-DATASET_PATH = '/Users/diego/Desktop/Oxford-BBC LRW Dataset/'
+DATASET_PATH = '/home/diego/Oxford-BBC LRW Dataset'
 
 # The tensor type to use in training and testing.
 TENSOR_TYPE = 'rgb_optical_flow'
 
 # The number of words to train and evaluate on
-NUM_WORDS = 10
+NUM_WORDS = 2
 
 # Configures Keras.
 def setup():

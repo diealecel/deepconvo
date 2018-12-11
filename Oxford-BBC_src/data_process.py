@@ -159,10 +159,10 @@ class OxfordBBCSequence(Sequence):
         with open(self.logfile_path, 'a') as f:
             if init:
                 f.write("Selected Dictionary\n\n")
+		f.write('\n'.join(["%d: %s" % (self.word_map[word], word) for word in self.word_trackers.keys()]))
             else:
-                f.write("\nExample Counts\n")
-
-            f.write('\n'.join(["%d: %s" % (self.word_map[word], word) for word in self.word_trackers.keys()]))
+                f.write("\n\nExample Counts\n")
+		f.write('\n'.join(["%d: %s" % (self.word_trackers[word], word) for word in self.word_trackers.keys()]))
             f.close()
 
     def __len__(self):
@@ -174,6 +174,7 @@ class OxfordBBCSequence(Sequence):
         y = []
         for i in range(self.batch_size):
             word = get_valid_word(self.word_trackers, self.word_limits)
+            print(self.word_trackers)
             if word is None: break
 
             datum_filename = word + ('_%05d' % self.word_trackers[word]) + DATA_EXT

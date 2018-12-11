@@ -43,7 +43,7 @@ DATASET_PATH = '/home/diego/Oxford-BBC LRW Dataset'
 TENSOR_TYPE = 'rgb'
 
 # The number of words to train and evaluate on
-NUM_WORDS = 10
+NUM_WORDS = 2
 
 # Configures Keras.
 def setup():
