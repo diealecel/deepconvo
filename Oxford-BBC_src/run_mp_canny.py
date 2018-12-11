@@ -13,7 +13,7 @@ from data_process import OxfordBBCSequence
 NUM_WORKERS = 100
 
 # The number of epochs to train the model.
-NUM_EPOCHS = 10
+NUM_EPOCHS = 3
 
 # The percentage of all batches to use for training per epoch.
 BATCH_PERCENTAGE = .005
@@ -22,7 +22,7 @@ BATCH_PERCENTAGE = .005
 BATCH_SZ = 20
 
 # The number of ordered frames per data point tensor.
-NUM_FRAMES_PER_TENSOR = 29
+NUM_FRAMES_PER_TENSOR = 29 - 1
 
 # The number of classes the model will try to discriminate.
 NUM_CLASSES = 500
@@ -34,13 +34,13 @@ NUM_TRAIN_EXAMPLES = 488766
 NUM_VAL_EXAMPLES = 25000
 
 # Dimensions of the input frames.
-INPUT_DIM = (NUM_FRAMES_PER_TENSOR, 256, 256, 3)
+INPUT_DIM = (NUM_FRAMES_PER_TENSOR, 256, 256, 1)
 
 # Dataset relative path.
 DATASET_PATH = '/home/diego/Oxford-BBC LRW Dataset'
 
 # The tensor type to use in training and testing.
-TENSOR_TYPE = 'rgb'
+TENSOR_TYPE = 'canny'
 
 # The number of words to train and evaluate on
 NUM_WORDS = 2
@@ -92,15 +92,14 @@ if __name__ == '__main__':
     model.fit_generator(train_batch_generator, epochs = NUM_EPOCHS, steps_per_epoch = num_train_batches, \
                         use_multiprocessing = True, workers = NUM_WORKERS)
     train_batch_generator.log_file(False)
-    
+
     # Set up for testing.
     test_batch_generator = OxfordBBCSequence(DATASET_PATH, 'val', BATCH_SZ, NUM_FRAMES_PER_TENSOR, TENSOR_TYPE, NUM_WORDS)
     num_test_batches = int(ceil(1.0 * NUM_VAL_EXAMPLES / BATCH_SZ) * BATCH_PERCENTAGE)
 
     predictions = model.evaluate_generator(test_batch_generator, steps = num_test_batches, \
                                            use_multiprocessing = True, workers = NUM_WORKERS)
-    print(test_batch_generator.word_trackers)
     test_batch_generator.log_file(False)
-    print(train_batch_generator.word_trackers)
+                                           
     print "Loss = " + str(predictions[0])
     print "Test accuracy = " + str(predictions[1])

@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from cv2 import imread, cvtColor, calcOpticalFlowFarneback, cartToPolar, normalize
+from cv2 import imread, Canny, cvtColor, calcOpticalFlowFarneback, cartToPolar, normalize
 from cv2 import COLOR_RGB2GRAY, COLOR_RGB2HSV, NORM_MINMAX, COLOR_HSV2RGB
 from copy import deepcopy
 from deprecated import deprecated
@@ -41,6 +41,21 @@ def generate_rgb_tensor(frames, num_frames_per_tensor):
     tensor_frames = np.stack(tensor_frames)
     return tensor_frames
 
+# Returns the tensor that corresponds to the video frames |frames| after
+# normailzation and passed through the canny filter. Frames are stacked
+# chronologically and are dispresed as uniformly.
+def generate_canny_tensor(frames, num_frames_per_tensor):
+    if len(frames) < num_frames_per_tensor:
+        raise Exception('Not enough frames to generate tensors. Please decrease |NUM_FRAMES_PER_TENSOR|.')    
+    tensor_frames = []
+    uniform_dispersion = np.linspace(0, len(frames) - 1, num = num_frames_per_tensor)
+    for i in uniform_dispersion:
+	frame = cvtColor(frames[int(i)], COLOR_RGB2GRAY)
+	frame = Canny(frame, 100, 200)[:,:,np.newaxis]
+        tensor_frames.append(frame)
+    tensor_frames = np.stack(tensor_frames)
+    return tensor_frames
+    
 
 # Returns the tensor that corresponds to the video frames |frames| after going
 # through RGB optical flow processing. Uses |num_frames_per_tensor| to configure

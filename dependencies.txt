@@ -2,3 +2,4 @@ deprecated
 keras
 opencv-python
 tensorflow
+scikit-image

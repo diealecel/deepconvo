@@ -9,7 +9,7 @@ from keras.utils.np_utils import to_categorical
 from keras.utils import Sequence
 
 from common.utilities import get_immediate_subdirs, get_files, print_progress
-from common.tensor_generation import generate_rgb_optical_flow_tensor, generate_rgb_tensor
+from common.tensor_generation import generate_rgb_optical_flow_tensor, generate_rgb_tensor, generate_canny_tensor
 
 DATA_EXT = '.mp4'
 
@@ -100,7 +100,8 @@ def get_tensor(datum_path, num_frames_per_tensor, tensor_type):
         return generate_rgb_tensor(frames, num_frames_per_tensor)
     if tensor_type == 'rgb_optical_flow':
         return generate_rgb_optical_flow_tensor(frames, num_frames_per_tensor)
-
+    if tensor_type == 'canny':
+	return generate_canny_tensor(frames, num_frames_per_tensor)
 
 # A generator object that generates tuples of examples and labels of size
 # |batch_size| from |dataset_path| according to |num_frames_per_tensor| and
@@ -174,7 +175,6 @@ class OxfordBBCSequence(Sequence):
         y = []
         for i in range(self.batch_size):
             word = get_valid_word(self.word_trackers, self.word_limits)
-            print(self.word_trackers)
             if word is None: break
 
             datum_filename = word + ('_%05d' % self.word_trackers[word]) + DATA_EXT
