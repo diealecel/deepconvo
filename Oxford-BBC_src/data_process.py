@@ -3,13 +3,13 @@
 import numpy as np
 
 from os.path import join
-from random import randrange
+from random import randrange, seed, sample
 from cv2 import VideoCapture
 from keras.utils.np_utils import to_categorical
 from keras.utils import Sequence
 
 from common.utilities import get_immediate_subdirs, get_files, print_progress
-from common.tensor_generation import generate_rgb_optical_flow_tensor, generate_rgb_tensor
+from common.tensor_generation import generate_rgb_optical_flow_tensor, generate_rgb_tensor, generate_canny_tensor
 
 DATA_EXT = '.mp4'
 
@@ -37,11 +37,13 @@ def get_word_limits(words, batch_type, dataset_path):
 
     return word_limits
 
-
 # Initializes and returns the word trackers and word limits that correspond to
 # the data at |dataset_path| and |batch_type|.
-def init_word_tools(batch_type, dataset_path):
+def init_word_tools(batch_type, dataset_path, limited_words=0):
     words = get_immediate_subdirs(dataset_path)
+    if limited_words:
+        seed(10)
+        words = sample(words, limited_words)
 
     word_trackers = init_word_trackers(words)
     word_limits = get_word_limits(words, batch_type, dataset_path)
@@ -98,14 +100,15 @@ def get_tensor(datum_path, num_frames_per_tensor, tensor_type):
         return generate_rgb_tensor(frames, num_frames_per_tensor)
     if tensor_type == 'rgb_optical_flow':
         return generate_rgb_optical_flow_tensor(frames, num_frames_per_tensor)
-
+    if tensor_type == 'canny':
+	return generate_canny_tensor(frames, num_frames_per_tensor)
 
 # A generator object that generates tuples of examples and labels of size
 # |batch_size| from |dataset_path| according to |num_frames_per_tensor| and
 # |batch_type|. Tensors are prepared according to |tensor_type|.
 def generate_batch(dataset_path, batch_type, batch_size, num_frames_per_tensor, tensor_type):
-    word_trackers, word_limits = init_word_tools(batch_type, dataset_path)
     word_map = create_word_map(dataset_path)
+    word_trackers, word_limits = init_word_tools(batch_type, dataset_path)
 
     num_examples = sum( word_limits[word] for word in word_limits )
     processed_examples = 0
@@ -141,11 +144,27 @@ def generate_batch(dataset_path, batch_type, batch_size, num_frames_per_tensor, 
 #       there are many more data points to offset the bias caused by training on
 #       the same data point more than once.
 class OxfordBBCSequence(Sequence):
-    def __init__(self, dataset_path, batch_type, batch_size, num_frames_per_tensor, tensor_type):
+
+    def __init__(self, dataset_path, batch_type, batch_size, num_frames_per_tensor, tensor_type, limited_words):
         self.dataset_path, self.batch_type, self.tensor_type = dataset_path, batch_type, tensor_type
         self.num_frames_per_tensor, self.batch_size = num_frames_per_tensor, batch_size
-        self.word_trackers, self.word_limits = init_word_tools(batch_type, dataset_path)
+        self.word_trackers, self.word_limits = init_word_tools(batch_type, dataset_path, limited_words)
         self.word_map = create_word_map(dataset_path)
+
+        file_name = self.batch_type + "_" + self.tensor_type +  "_logfile.txt"
+        self.logfile_path = join(self.dataset_path, '..', file_name)
+
+        self.log_file(True)
+
+    def log_file(self, init):
+        with open(self.logfile_path, 'a') as f:
+            if init:
+                f.write("Selected Dictionary\n\n")
+		f.write('\n'.join(["%d: %s" % (self.word_map[word], word) for word in self.word_trackers.keys()]))
+            else:
+                f.write("\n\nExample Counts\n")
+		f.write('\n'.join(["%d: %s" % (self.word_trackers[word], word) for word in self.word_trackers.keys()]))
+            f.close()
 
     def __len__(self):
         num_examples = sum( self.word_limits[word] for word in self.word_limits )

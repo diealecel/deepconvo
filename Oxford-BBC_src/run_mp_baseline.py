@@ -37,10 +37,13 @@ NUM_VAL_EXAMPLES = 25000
 INPUT_DIM = (NUM_FRAMES_PER_TENSOR, 256, 256, 3)
 
 # Dataset relative path.
-DATASET_PATH = '/Users/diego/Desktop/Oxford-BBC LRW Dataset/'
+DATASET_PATH = '/home/diego/Oxford-BBC LRW Dataset'
 
 # The tensor type to use in training and testing.
 TENSOR_TYPE = 'rgb'
+
+# The number of words to train and evaluate on
+NUM_WORDS = 2
 
 # Configures Keras.
 def setup():
@@ -81,20 +84,23 @@ if __name__ == '__main__':
     print 'Please note: multiprocessing enabled. Currently running on ' + str(NUM_WORKERS) + ' threads.\n'
 
     # Set up for training.
-    train_batch_generator = OxfordBBCSequence(DATASET_PATH, 'train', BATCH_SZ, NUM_FRAMES_PER_TENSOR, TENSOR_TYPE)
+    train_batch_generator = OxfordBBCSequence(DATASET_PATH, 'train', BATCH_SZ, NUM_FRAMES_PER_TENSOR, TENSOR_TYPE, NUM_WORDS)
     num_train_batches = int(ceil(1.0 * NUM_TRAIN_EXAMPLES / BATCH_SZ) * BATCH_PERCENTAGE)
 
     model = get_model_from_architecture(input_shape = INPUT_DIM, classes = NUM_CLASSES)
     model.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['accuracy'])
     model.fit_generator(train_batch_generator, epochs = NUM_EPOCHS, steps_per_epoch = num_train_batches, \
                         use_multiprocessing = True, workers = NUM_WORKERS)
-
+    train_batch_generator.log_file(False)
+    
     # Set up for testing.
-    test_batch_generator = OxfordBBCSequence(DATASET_PATH, 'val', BATCH_SZ, NUM_FRAMES_PER_TENSOR, TENSOR_TYPE)
+    test_batch_generator = OxfordBBCSequence(DATASET_PATH, 'val', BATCH_SZ, NUM_FRAMES_PER_TENSOR, TENSOR_TYPE, NUM_WORDS)
     num_test_batches = int(ceil(1.0 * NUM_VAL_EXAMPLES / BATCH_SZ) * BATCH_PERCENTAGE)
 
     predictions = model.evaluate_generator(test_batch_generator, steps = num_test_batches, \
                                            use_multiprocessing = True, workers = NUM_WORKERS)
-
+    print(test_batch_generator.word_trackers)
+    test_batch_generator.log_file(False)
+    print(train_batch_generator.word_trackers)
     print "Loss = " + str(predictions[0])
     print "Test accuracy = " + str(predictions[1])

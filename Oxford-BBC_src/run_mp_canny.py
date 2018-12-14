@@ -16,7 +16,10 @@ NUM_WORKERS = 100
 NUM_EPOCHS = 3
 
 # The percentage of all batches to use for training per epoch.
-BATCH_PERCENTAGE = .005
+TRAIN_BATCH_PERCENTAGE = .005
+
+# The percentage of all batches to use for test per epoch.
+TEST_BATCH_PERCENTAGE = .04
 
 # The batch size to be used for training.
 BATCH_SZ = 20
@@ -34,13 +37,13 @@ NUM_TRAIN_EXAMPLES = 488766
 NUM_VAL_EXAMPLES = 25000
 
 # Dimensions of the input frames.
-INPUT_DIM = (NUM_FRAMES_PER_TENSOR, 256, 256, 3)
+INPUT_DIM = (NUM_FRAMES_PER_TENSOR, 256, 256, 1)
 
 # Dataset relative path.
 DATASET_PATH = '/home/diego/Oxford-BBC LRW Dataset'
 
 # The tensor type to use in training and testing.
-TENSOR_TYPE = 'rgb_optical_flow'
+TENSOR_TYPE = 'canny'
 
 # The number of words to train and evaluate on
 NUM_WORDS = 2
@@ -85,7 +88,7 @@ if __name__ == '__main__':
 
     # Set up for training.
     train_batch_generator = OxfordBBCSequence(DATASET_PATH, 'train', BATCH_SZ, NUM_FRAMES_PER_TENSOR, TENSOR_TYPE, NUM_WORDS)
-    num_train_batches = int(ceil(1.0 * NUM_TRAIN_EXAMPLES / BATCH_SZ) * BATCH_PERCENTAGE)
+    num_train_batches = int(ceil(1.0 * NUM_TRAIN_EXAMPLES / BATCH_SZ) * TRAIN_BATCH_PERCENTAGE)
 
     model = get_model_from_architecture(input_shape = INPUT_DIM, classes = NUM_CLASSES)
     model.compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = ['accuracy'])
@@ -95,7 +98,7 @@ if __name__ == '__main__':
 
     # Set up for testing.
     test_batch_generator = OxfordBBCSequence(DATASET_PATH, 'val', BATCH_SZ, NUM_FRAMES_PER_TENSOR, TENSOR_TYPE, NUM_WORDS)
-    num_test_batches = int(ceil(1.0 * NUM_VAL_EXAMPLES / BATCH_SZ) * BATCH_PERCENTAGE)
+    num_test_batches = int(ceil(1.0 * NUM_VAL_EXAMPLES / BATCH_SZ) * TEST_BATCH_PERCENTAGE)
 
     predictions = model.evaluate_generator(test_batch_generator, steps = num_test_batches, \
                                            use_multiprocessing = True, workers = NUM_WORKERS)
