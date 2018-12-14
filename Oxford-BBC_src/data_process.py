@@ -37,6 +37,7 @@ def get_word_limits(words, batch_type, dataset_path):
 
     return word_limits
 
+
 # Initializes and returns the word trackers and word limits that correspond to
 # the data at |dataset_path| and |batch_type|.
 def init_word_tools(batch_type, dataset_path, limited_words=0):
@@ -103,6 +104,7 @@ def get_tensor(datum_path, num_frames_per_tensor, tensor_type):
     if tensor_type == 'canny':
 	return generate_canny_tensor(frames, num_frames_per_tensor)
 
+
 # A generator object that generates tuples of examples and labels of size
 # |batch_size| from |dataset_path| according to |num_frames_per_tensor| and
 # |batch_type|. Tensors are prepared according to |tensor_type|.
@@ -144,7 +146,6 @@ def generate_batch(dataset_path, batch_type, batch_size, num_frames_per_tensor, 
 #       there are many more data points to offset the bias caused by training on
 #       the same data point more than once.
 class OxfordBBCSequence(Sequence):
-
     def __init__(self, dataset_path, batch_type, batch_size, num_frames_per_tensor, tensor_type, limited_words):
         self.dataset_path, self.batch_type, self.tensor_type = dataset_path, batch_type, tensor_type
         self.num_frames_per_tensor, self.batch_size = num_frames_per_tensor, batch_size
@@ -155,7 +156,7 @@ class OxfordBBCSequence(Sequence):
         self.logfile_path = join(self.dataset_path, '..', file_name)
 
         self.log_file(True)
-
+	
     def log_file(self, init):
         with open(self.logfile_path, 'a') as f:
             if init:
