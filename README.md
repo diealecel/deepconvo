@@ -51,15 +51,6 @@ python run_mp_baseline.py
 python run_mp_rgb_optical_flow.py
 ```
 
-## Results
-
-deepConvo yields different results depending on how it's trained. Below are results after training for ten epochs with 50-layer tensor data point representation.
-
-train method | train loss | train accuracy | test accuracy
---- | --- | --- | --- 
-RGB tensors | .811 | 73.75% | 50%
-RGB optical flow tensors | ? | ? | ?
-
 ## Acknowledgments
 
 This repository uses the [VidTIMIT Audio-Video Dataset](http://conradsanderson.id.au/vidtimit/). Additionally, this repository is made to use the [Oxford-BBC LRW Dataset](http://www.robots.ox.ac.uk/~vgg/data/lip_reading/lrw1.html).
