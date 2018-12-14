@@ -41,6 +41,7 @@ def generate_rgb_tensor(frames, num_frames_per_tensor):
     tensor_frames = np.stack(tensor_frames)
     return tensor_frames
 
+
 # Returns the tensor that corresponds to the video frames |frames| after
 # normailzation and passed through the canny filter. Frames are stacked
 # chronologically and are dispresed as uniformly.
